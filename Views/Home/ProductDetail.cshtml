@@ -1,0 +1,28 @@
+﻿@using _91APPTesting.Models;
+@model Product
+@{
+    ViewBag.Title = "ProductDetail";
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ProductId</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>OriginPrice</th>
+            <th>Price</th>
+            <th>SupplierId</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.ProductId</td>
+            <td>@Model.Name</td>
+            <td>@Model.Description</td>
+            <td>@Model.OriginPrice</td>
+            <td>@Model.Price</td>
+            <td>@Model.SupplierId</td>
+        </td>
+    </tbody>
+</table>

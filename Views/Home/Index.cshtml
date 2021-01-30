@@ -1,0 +1,72 @@
+﻿@using _91APPTesting.Models;
+@using _91APPTesting.Controllers;
+@model List<Order>
+@{
+    string GetPaymentStatus(OrderStatus orderStatus)
+    {
+        switch (orderStatus)
+        {
+            case OrderStatus.UnPayed:
+                return "Un Payed";
+            case OrderStatus.Shipped:
+                return "To Be shipped";
+            case OrderStatus.PaymentComplete:
+                return "Payment completed";
+            default:
+                return "";
+        }
+    }
+}
+<table border="1">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Order Id</th>
+            <th>Order Item</th>
+            <th>Price</th>
+            <th>Cost</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var order in Model)
+            {
+                <tr>
+                    <td><input type="checkbox" data-value="@order.OrderId" class="order"></td>
+                    <td>@order.OrderId</td>
+                    <td>@Html.ActionLink("Product" + @order.ProductId, "ProductDetail", new { id = @order.ProductId })</td>
+                    <td>@order.Price</td>
+                    <td>@order.Cost</td>
+                    <td>@GetPaymentStatus(@order.Status)</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<br />
+<div>
+    <input type="button" class="btn btn-primary" value="Confirm" onclick="checkStatus()" />
+</div>
+@section scripts{
+    <script type="text/javascript">
+        function checkStatus() {
+            var orders = [];
+            $(".order").each(function (i, e) {
+                var orderId = $(e).data("value");
+                var isCheck = $(e).prop("checked");
+                var obj = { orderId: orderId, isCheck: isCheck };
+                orders.push(obj);
+            });
+            $.ajax({
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(orders),
+                url: getRootPath() + "/Home/DoEditOrderList",
+                success: function () {
+                    location.href = getRootPath() + "/Home/Index";
+                }
+            })
+        }
+    </script>
+}
